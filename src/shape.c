@@ -9,7 +9,7 @@ bool shape_ctor(shape_t *me, coordinates_array_t *array, uint32_t position_x, ui
 	me->array.n_array = 0;
 
 	me->array = *array; /*Copio el contenido del puntero array*/
-	
+
 	if(me->array.coordinates = (coordinates_t*) malloc(array->n_array*sizeof(coordinates_t)))
 		return false;
 	me->array.n_array = array->array;
