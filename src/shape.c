@@ -4,7 +4,19 @@
 
 
 bool shape_ctor(shape_t *me, coordinates_array_t *array, uint32_t position_x, uint32_t position_y){
-	
+	me->position.x = position_x;
+	me->position.y = position_y;
+	me->array.n_array = 0;
+
+	me->array = *array; /*Copio el contenido del puntero array*/
+
+	if(me->array.coordinates = (coordinates_t*) malloc(array->n_array*sizeof(coordinates_t)))
+		return false;
+	me->array.n_array = array->array;
+	for (int i = 0; i<array->n_array; i++){
+		me->array.coordinates[i] = array->coordinates[i];
+	}
+	return true
 }
 
 void shape_dtor(shape_t *me){
