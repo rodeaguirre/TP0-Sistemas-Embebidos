@@ -20,15 +20,20 @@ bool shape_ctor(shape_t *me, coordinates_array_t *array, uint32_t position_x, ui
 }
 
 void shape_dtor(shape_t *me){
-	// Completar
+	free(me->array.coordinates);
 }
 
 bool shape_move(shape_t *me, uint32_t dx, uint32_t dy){
-	// Completar
+	me->position.x += dx;
+	me->position.x += dy;
+	for (int i = 0; i<ma->array.n_array; i++){
+		me->array.coordinates[i].x +=dx;
+		me->array.coordinates[i].y +=dy;
+	}
 }
 
 bool shape_rotate(shape_t *me, float angle){
-	// Completar
+	
 }
 
 float shape_distance_from(shape_t *me, shape_t *shape){
