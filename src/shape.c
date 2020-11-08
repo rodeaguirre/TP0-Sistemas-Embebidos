@@ -4,7 +4,7 @@
 
 
 bool shape_ctor(shape_t *me, coordinates_array_t *array, uint32_t position_x, uint32_t position_y){
-	// Completar
+	
 }
 
 void shape_dtor(shape_t *me){
