@@ -4,8 +4,22 @@
 #include <math.h>
 
 
+
+
 bool line_ctor(line_t *me, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2){
-  // Completar
+  /** 	@brief: Contructor del objeto "línea"
+*		@params: recibe el puntero al objeto y las coordenadas para definir el segmento de línea.
+*		@return: Devuelve verdadero sii encontró memoria para guardar el objeto.
+**/
+	me->start.x=x1;
+	me->start.y=y1;
+	me->end.x=x2;
+	me->end.y=y2;
+
+	me->super.position.x=x1;
+	me->super.position.y=y1;
+
+
 }
 
 

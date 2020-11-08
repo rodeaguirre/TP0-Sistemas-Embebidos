@@ -59,4 +59,7 @@ float shape_distance_from(shape_t *me, shape_t *shape);
 **/
 bool shape_plot(shape_t *me, image_t *image);
 
+
+
+
 #endif
