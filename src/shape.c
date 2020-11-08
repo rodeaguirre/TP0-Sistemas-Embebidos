@@ -20,7 +20,7 @@ bool shape_ctor(shape_t *me, coordinates_array_t *array, uint32_t position_x, ui
 }
 
 void shape_dtor(shape_t *me){
-	
+	free(me->array.coordinates);
 }
 
 bool shape_move(shape_t *me, uint32_t dx, uint32_t dy){
