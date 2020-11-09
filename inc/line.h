@@ -40,9 +40,10 @@ bool line_scale(line_t *me, float factor);
 
 float line_get_length(line_t *me);
 
+static void point_calculation(line_t *me);
 static bool array_init (coordinates_array_t* array, uint32_t length);
 static void array_add_element (coordinates_array_t* array, int i, uint32_t x, uint32_t y);
-static float pentiente (line_t *me);
+static float pendiente (line_t *me);
 static float ordenada_origen (line_t *me);
 
 #endif

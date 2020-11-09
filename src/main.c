@@ -12,6 +12,8 @@
 /* Ejemplo de uso de las funciones de la clase "imagen" */
 
 int main(void){
+
+	printf("Running main... \n");
 	
 	image_t img;
 	int img_count=0;
