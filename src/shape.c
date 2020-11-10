@@ -10,19 +10,14 @@
 bool shape_ctor(shape_t *me, coordinates_array_t *array, uint32_t position_x, uint32_t position_y){
 	me->position.x = position_x;
 	me->position.y = position_y;
-	me->array.n_array = 0;
-	me->array = *array; /*Copio el contenido del puntero array*/
-  
-	if(!(me->array.coordinates = (coordinates_t*) malloc(array->n_array*sizeof(coordinates_t))))
 
-    
-		return false;
-	me->array.n_array = array->array;
-	for (int i = 0; i<array->n_array; i++){
-		me->array.coordinates[i] = array->coordinates[i];
+  	/*Inicializo el array con el largo necesario, pero no lo lleno.*/
+	if(!(array_init (&(me->array), me->array.n_array))){
+	return false;
 	}
+	me->array.n_array = array->n_array;
+
 	return true;
-}
 }
 
 void shape_dtor(shape_t *me){
@@ -30,8 +25,8 @@ void shape_dtor(shape_t *me){
 }
 
 bool shape_move(shape_t *me, uint32_t dx, uint32_t dy){
-	me->position.x += dx;
-	me->position.x += dy;
+	me->position.x = dx;
+	me->position.y = dy;
 	return true;
 }
 
@@ -52,5 +47,15 @@ bool shape_plot(shape_t *me, image_t *image){
 		image_write(image, x, y, HIGH);	
 	}
 //	presupongo que el control del tamaño está dentro de image_write
+	return true;
+}
+
+
+
+static bool array_init (coordinates_array_t* array, uint32_t length){
+	if(!(array->coordinates = (coordinate_t*) malloc(length*sizeof(coordinate_t)))){
+		return false;
+	}
+	array->n_array = length;
 	return true;
 }

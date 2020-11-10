@@ -5,23 +5,29 @@
 #include <stdlib.h>
 
 
-
 bool line_ctor(line_t *me, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2){
+	static size_t n_Lines;
+	n_Lines++;
+	
 	me->start.x=x1;
 	me->start.y=y1;
 	me->end.x=x2;
 	me->end.y=y2;
 	uint32_t length = fmax (abs(x2-x1),abs(y2-y1));
-	if(array_init (&(me->super.array), length)){
-		point_calculation(me);
-	}
+	
+	me->super.array.n_array = length;
+	
 	if (!(shape_ctor(&(me->super), &(me->super.array), fmin(x1,x2) , fmin(y1,y2)))){
 		return false;
 	}
+	point_calculation(me);
+
 	return true;
 }
 
-
+void line_dtor(line_t *me){
+	shape_dtor(&(me->super));
+}
 
 
 bool line_rotate(line_t *me, float angle){
@@ -68,14 +74,6 @@ static void point_calculation(line_t *me){
 	}
 }
 
-
-static bool array_init (coordinates_array_t* array, uint32_t length){
-	if(!(array->coordinates = (coordinate_t*) malloc(length*sizeof(coordinate_t)))){
-		return false;
-	}
-	array->n_array = length;
-	return true;
-}
 
 static void array_add_element (coordinates_array_t* array, int i, uint32_t x, uint32_t y){
 	array->coordinates[i].x = x;

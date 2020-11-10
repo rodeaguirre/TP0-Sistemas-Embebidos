@@ -1,5 +1,5 @@
-#ifndef RECTANGLE_H
-#define RECTANGLE_H 
+#ifndef LINE_H
+#define LINE_H 
 
 #include "shape.h"
 #include <stdint.h>
@@ -17,6 +17,13 @@ typedef struct {
 *		@return: Devuelve verdadero sii encontró memoria para guardar el objeto.
 **/
 bool line_ctor(line_t *me, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
+
+
+/** 	@brief: Destructor del objeto "linea"
+*		@params: Recibe el puntero al objeto.
+*		@return: void
+**/
+void line_dtor(line_t *me);
 
 
 /** 	@brief: Rotar al segmento dejando fijo el punto de partida.
@@ -41,9 +48,9 @@ bool line_scale(line_t *me, float factor);
 float line_get_length(line_t *me);
 
 static void point_calculation(line_t *me);
-static bool array_init (coordinates_array_t* array, uint32_t length);
-static void array_add_element (coordinates_array_t* array, int i, uint32_t x, uint32_t y);
-static float pendiente (line_t *me);
-static float ordenada_origen (line_t *me);
+static void array_add_element(coordinates_array_t* array, int i, uint32_t x, uint32_t y);
+static float pendiente(line_t *me);
+static float ordenada_origen(line_t *me);
+
 
 #endif
