@@ -4,7 +4,7 @@ SRC = $(wildcard src/*)
 OBJECTS = $(foreach file, $(SRC), out/$(basename $(notdir $(file))).o)
 
 CC = gcc
-CFLAGS = -Wall -std=c99 -Iinc
+CFLAGS = -g3 -Wall -std=c99 -Iinc
 
 all: out $(OBJECTS)
 	@echo Building...

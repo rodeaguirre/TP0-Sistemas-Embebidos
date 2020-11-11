@@ -40,9 +40,5 @@ uint32_t rectangle_get_area(rectangle_t *me);
 
 void rectangle_dtor(rectangle_t *me);
 
-static bool init_rectangle (rectangle_t *me, line_t *w1, line_t *w2, line_t *h1, line_t *h2);
-static void array_add_all (coordinates_array_t *array, coordinates_array_t *array_to_add, int *i);
-
-
 
 #endif

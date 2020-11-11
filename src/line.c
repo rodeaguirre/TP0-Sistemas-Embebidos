@@ -3,6 +3,59 @@
 #include <stdint.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
+
+static bool pendiente (line_t *me, float*ret){
+	printf("end.y=%d, start.y =%d, end.x=%d, start.x =%d \n", me->end.y, me->start.y,me->end.x, me->start.x);
+	if ((me->end.x)==(me->start.x)){
+		return true;
+	}
+	*ret = ((me->end.y)-(me->start.y))/((me->end.x)-(me->start.x));
+	return false;
+}
+
+
+static bool ordenada_origen (line_t *me, float*ret){
+	float m;
+	if(pendiente (me,&m)){
+		return true;
+	}
+	*ret = ((me->start.y) - m*(me->start.x));
+	return false;
+}
+
+
+static void array_add_element (coordinates_array_t* array, int i, uint32_t x, uint32_t y){
+	array->coordinates[i].x = x;
+	array->coordinates[i].y = y;
+}
+
+static void point_calculation(line_t *me){
+	float m, b, step, x, y;
+	uint32_t length = me->super.array.n_array;
+
+	if(pendiente(me,&m)){ //Pendiente infinita
+		step = ((me->end.y)-(me->start.y))/(length);
+		x = me->start.x;
+		for (int i = 0; i<length; i++){
+
+			y = i*step;
+			array_add_element(&(me->super.array),i,x,round(y));
+		}
+	}
+	else { //Pendiente finita
+		step = ((me->end.x)-(me->start.x))/(length);
+		ordenada_origen (me,&b);
+		for (int i = 0; i<length; i++){
+			x = ((me->start.x + (i*step)));
+			y = m*x+b;
+			array_add_element(&(me->super.array),i,round(x),round(y));
+		}
+	}
+}
+
+
+
 
 
 bool line_ctor(line_t *me, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2){
@@ -44,11 +97,16 @@ bool line_rotate(line_t *me, float angle){
 
 bool line_scale(line_t *me, float factor){
 	/*Considero y=m.x+b*/
-	float m = pendiente (me);
-	float b = ordenada_origen (me);
-	uint32_t new_end_x = factor*(me->end.x);
-	uint32_t new_end_y = m*(new_end_x) + b ;
-
+	float m, b;
+	uint32_t new_end_x,new_end_y;
+	
+	if(pendiente (me,&m)){
+		new_end_y = factor*(me->end.y);
+	} else{
+		ordenada_origen (me,&b);
+		new_end_x = factor*(me->end.x);
+		new_end_y = m*(new_end_x) + b ;
+	}
 	shape_dtor(&(me->super));
 	line_ctor (me, me->start.x, me->start.y,new_end_x,new_end_y);
 	return true;
@@ -58,33 +116,3 @@ bool line_scale(line_t *me, float factor){
 float line_get_length(line_t *me){
   return sqrt(pow((me->start.x)-(me->end.x),2)+pow((me->start.y)-(me->end.y),2));
 }
-
-static void point_calculation(line_t *me){
-	float m = pendiente (me);
-	float b = ordenada_origen (me);
-
-	uint32_t length = me->super.array.n_array;
-
-	float step = ((me->end.x)-(me->start.x))/(length);
-
-	for (int i = 0; i<length; i++){
-		float x = ((me->start.x + (i*step)));
-		float y = m*x+b;
-		array_add_element(&(me->super.array),i,round(x),round(y));
-	}
-}
-
-
-static void array_add_element (coordinates_array_t* array, int i, uint32_t x, uint32_t y){
-	array->coordinates[i].x = x;
-	array->coordinates[i].y = y;
-}
-
-static float pendiente (line_t *me){
-	return ((me->end.y)-(me->start.y))/((me->end.x)-(me->start.x));
-}
-static float ordenada_origen (line_t *me){
-	float m = pendiente (me);
-	return((me->start.y) - m*(me->start.x));
-}
-

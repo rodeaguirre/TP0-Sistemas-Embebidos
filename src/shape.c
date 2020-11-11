@@ -7,6 +7,15 @@
 #include <math.h>
 
 
+static bool array_init (coordinates_array_t* array, uint32_t length){
+	if(!(array->coordinates = (coordinate_t*) malloc(length*sizeof(coordinate_t)))){
+		return false;
+	}
+	array->n_array = length;
+	return true;
+}
+
+
 bool shape_ctor(shape_t *me, coordinates_array_t *array, uint32_t position_x, uint32_t position_y){
 	me->position.x = position_x;
 	me->position.y = position_y;
@@ -47,15 +56,5 @@ bool shape_plot(shape_t *me, image_t *image){
 		image_write(image, x, y, HIGH);	
 	}
 //	presupongo que el control del tamaño está dentro de image_write
-	return true;
-}
-
-
-
-static bool array_init (coordinates_array_t* array, uint32_t length){
-	if(!(array->coordinates = (coordinate_t*) malloc(length*sizeof(coordinate_t)))){
-		return false;
-	}
-	array->n_array = length;
 	return true;
 }

@@ -42,7 +42,10 @@ void image_dtor(image_t *me){
 
 
 void image_write(image_t *me, uint32_t i, uint32_t j, img_data_t value){
-	me->data[i][j] = value;
+	//printf("i=%d,j=%d,value=%d",i,j,value);
+	if (i<me->n_rows && j<me->n_cols){
+		me->data[i][j] = value;
+	}
 }	
 
 
