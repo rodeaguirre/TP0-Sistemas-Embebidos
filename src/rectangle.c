@@ -15,13 +15,14 @@
 
 */
 
-static void array_add_all (coordinates_array_t* array, coordinates_array_t* array_to_add, int* i){
-	for (int j = 0;j< (array_to_add->n_array);j++,(*i)++){
-		array->coordinates[*i].x = array_to_add->coordinates[j].x;
-		array->coordinates[*i].y = array_to_add->coordinates[j].y;
+static void array_add_all (coordinates_array_t* array, shape_t* shape_to_add, int* i){	
+	for (int j = 0;j< (shape_to_add->array.n_array);j++,(*i)++){
+		array->coordinates[*i].x = shape_to_add->array.coordinates[j].x + shape_to_add->position.x;
+		array->coordinates[*i].y = shape_to_add->array.coordinates[j].y + shape_to_add->position.y;
 	}
 
 }
+
 
 static bool init_rectangle (rectangle_t * me, line_t* w1, line_t* w2, line_t* h1, line_t* h2){
 	int i;
@@ -33,10 +34,10 @@ static bool init_rectangle (rectangle_t * me, line_t* w1, line_t* w2, line_t* h1
 	}
 
 	//Incorporo los arrays de las lineas al array del rectangulo.
-	array_add_all ( &(me->super.array),  &(w1->super.array), &i);
-	array_add_all ( &(me->super.array),  &(w2->super.array), &i);
-	array_add_all ( &(me->super.array),  &(h1->super.array), &i);
-	array_add_all ( &(me->super.array),  &(h2->super.array), &i);
+	array_add_all ( &(me->super.array),  &(w1->super), &i);
+	array_add_all ( &(me->super.array),  &(w2->super), &i);
+	array_add_all ( &(me->super.array),  &(h1->super), &i);
+	array_add_all ( &(me->super.array),  &(h2->super), &i);
 
 	//Liberar objetos.
 	line_dtor(w1);
@@ -66,10 +67,10 @@ bool rectangle_ctor(rectangle_t *me, uint32_t position_x, uint32_t position_y, u
 
 
 
-	line_ctor(&w1, position_x ,  		position_y ,			position_x + width,  position_y);
-	line_ctor(&h1, position_x + width,  position_y , 			position_x + width,  position_y + height);
-	line_ctor(&w2, position_x + width,  position_y + height, 	position_x ,  		 position_y + height);
-	line_ctor(&h2, position_x ,  		position_y + height,  	position_x ,  		 position_y );
+	line_ctor(&w1, 0 ,  	 0 ,		width-1,  	0);
+	line_ctor(&h1, width-1,  0 , 		width-1,  	height-1);
+	line_ctor(&w2, width-1,  height-1, 	0 ,  		height-1);
+	line_ctor(&h2, 0 , 		 height-1 ,	0 ,  		0 );
 
 	
 	return init_rectangle(me, &w1,&w2,&h1,&h2);
@@ -79,20 +80,14 @@ bool rectangle_ctor(rectangle_t *me, uint32_t position_x, uint32_t position_y, u
 
 bool rectangle_rotate(rectangle_t *me, float angle){
 	
-	line_t w1;
-	line_t w2;
-	line_t h1;
-	line_t h2;
+	line_t w1, w2, h1, h2;
 	
-	uint32_t position_x = me->super.position.x;
-	uint32_t position_y = me->super.position.y;
-	uint32_t height = me->height;
-	uint32_t width = me->width;
+	uint32_t height = me->height, width = me->width;
 
-	line_ctor(&w1, position_x ,  		position_y ,			position_x + width,  position_y);
-	line_ctor(&h1, position_x + width,  position_y + height, 	position_x + width,  position_y);
-	line_ctor(&w2, position_x + width,  position_y + height, 	position_x ,  		 position_y + height);
-	line_ctor(&h2, position_x ,  		position_y ,  			position_x ,  		 position_y + height);
+	line_ctor(&w1, 0 ,  	 0 ,		width-1,  	0);
+	line_ctor(&h1, width-1,  0 , 		width-1,  	height-1);
+	line_ctor(&w2, width-1,  height-1, 	0 ,  		height-1);
+	line_ctor(&h2, 0 , 		 height-1 ,	0 ,  		0 );
 
 	line_rotate(&w1, angle);
 	line_rotate(&w2, angle);

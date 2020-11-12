@@ -50,7 +50,7 @@ void image_write(image_t *me, uint32_t i, uint32_t j, img_data_t value){
 
 
 img_data_t image_read(image_t *me, uint32_t i, uint32_t j){
-	return me->data[i][j];
+	return me->data[j][i];
 }
 
 

@@ -8,7 +8,7 @@
 
 
 static bool array_init (coordinates_array_t* array, uint32_t length){
-	if(!(array->coordinates = (coordinate_t*) malloc(length*sizeof(coordinate_t)))){
+	if(!(array->coordinates = (coordinate_t*) calloc(length,sizeof(coordinate_t)))){
 		return false;
 	}
 	array->n_array = length;
@@ -36,6 +36,7 @@ void shape_dtor(shape_t *me){
 bool shape_move(shape_t *me, uint32_t dx, uint32_t dy){
 	me->position.x = dx;
 	me->position.y = dy;
+	printf("dx=%d,dy=%d",dx,dy);
 	return true;
 }
 
